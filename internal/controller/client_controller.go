@@ -19,7 +19,6 @@ package controller
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -27,13 +26,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
+	frpconfigv1 "github.com/fatedier/frp/pkg/config/v1"
 	frpv1alpha1 "github.com/yejiayu/frp-operator/api/v1alpha1"
 )
-
-type Server struct {
-	BindAddr string `json:"bindAddr"`
-	Port     string `json:"port"`
-}
 
 // ClientReconciler reconciles a Client object
 type ClientReconciler struct {
@@ -55,9 +50,7 @@ type ClientReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.16.3/pkg/reconcile
 func (r *ClientReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
-
-	// TODO(user): your logic here
+	logger := log.FromContext(ctx)
 
 	instance := frpv1alpha1.Client{}
 	err := r.Get(ctx, req.NamespacedName, &instance)
@@ -68,15 +61,11 @@ func (r *ClientReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 		return ctrl.Result{}, err
 	}
 
-	fmt.Printf("%#v\n", instance)
-	fmt.Printf("json %s\n", instance.Spec.ClientCommonConfig.String())
-
-	s := Server{}
-	err = json.Unmarshal(instance.Spec.ClientCommonConfig.Raw, &s)
+	clientCommonConfig := frpconfigv1.ClientCommonConfig{}
+	err = json.Unmarshal(instance.Spec.ClientCommonConfig.Raw, &clientCommonConfig)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-	fmt.Printf("%#v\n", s)
 
 	return ctrl.Result{}, nil
 }
