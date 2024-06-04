@@ -18,7 +18,10 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -26,6 +29,11 @@ import (
 
 	frpv1alpha1 "github.com/yejiayu/frp-operator/api/v1alpha1"
 )
+
+type Server struct {
+	BindAddr string `json:"bindAddr"`
+	Port     string `json:"port"`
+}
 
 // ClientReconciler reconciles a Client object
 type ClientReconciler struct {
@@ -50,6 +58,25 @@ func (r *ClientReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 	_ = log.FromContext(ctx)
 
 	// TODO(user): your logic here
+
+	instance := frpv1alpha1.Client{}
+	err := r.Get(ctx, req.NamespacedName, &instance)
+	if err != nil {
+		if errors.IsNotFound(err) {
+			return ctrl.Result{}, nil
+		}
+		return ctrl.Result{}, err
+	}
+
+	fmt.Printf("%#v\n", instance)
+	fmt.Printf("json %s\n", instance.Spec.ClientCommonConfig.String())
+
+	s := Server{}
+	err = json.Unmarshal(instance.Spec.ClientCommonConfig.Raw, &s)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	fmt.Printf("%#v\n", s)
 
 	return ctrl.Result{}, nil
 }

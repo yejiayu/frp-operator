@@ -34,10 +34,10 @@ spec:
           spec:
             description: ClientSpec defines the desired state of Client
             properties:
-              foo:
-                description: Foo is an example field of Client. Edit client_types.go
-                  to remove/update
-                type: string
+              clientCommonConfig:
+                x-kubernetes-preserve-unknown-fields: true
+            required:
+            - clientCommonConfig
             type: object
           status:
             description: ClientStatus defines the observed state of Client
