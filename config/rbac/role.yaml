@@ -1,15 +1,58 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  labels:
-    app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/instance: manager-role
-    app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: frp-operator
-    app.kubernetes.io/part-of: frp-operator
-    app.kubernetes.io/managed-by: kustomize
   name: manager-role
 rules:
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - frp.yejiayu.github.com
+  resources:
+  - clients
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - frp.yejiayu.github.com
+  resources:
+  - clients/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - frp.yejiayu.github.com
+  resources:
+  - clients/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - frp.yejiayu.github.com
+  resources:
+  - proxies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - frp.yejiayu.github.com
+  resources:
+  - proxies/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - frp.yejiayu.github.com
+  resources:
+  - proxies/status
+  verbs:
+  - get
+  - patch
+  - update

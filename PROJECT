@@ -2,7 +2,7 @@
 # This file is used to track the info used to scaffold your project
 # and allow the plugins properly work.
 # More info: https://book.kubebuilder.io/reference/project-config.html
-domain: hub.docker.com
+domain: yejiayu.github.com
 layout:
 - go.kubebuilder.io/v4
 plugins:
@@ -10,4 +10,23 @@ plugins:
   scorecard.sdk.operatorframework.io/v2: {}
 projectName: frp-operator
 repo: github.com/yejiayu/frp-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yejiayu.github.com
+  group: frp
+  kind: Client
+  path: github.com/yejiayu/frp-operator/api/v1alpha1
+  version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yejiayu.github.com
+  group: frp
+  kind: Proxy
+  path: github.com/yejiayu/frp-operator/api/v1alpha1
+  version: v1alpha1
 version: "3"

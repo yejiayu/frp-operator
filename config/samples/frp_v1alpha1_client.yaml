@@ -1,0 +1,12 @@
+apiVersion: frp.yejiayu.github.com/v1alpha1
+kind: Client
+metadata:
+  labels:
+    app.kubernetes.io/name: client
+    app.kubernetes.io/instance: client-sample
+    app.kubernetes.io/part-of: frp-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: frp-operator
+  name: client-sample
+spec:
+  # TODO(user): Add fields here
